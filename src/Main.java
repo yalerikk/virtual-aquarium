@@ -100,6 +100,7 @@ public class Main {
 
     private static void countAquarium() {
         int choice;
+        Aquarium.isErrorDisplayed = false; // сброс флага
         System.out.println("\nВывести список рыбок в аквариуме перед просмотром суммы?:\n" +
                 "1)Да;\n2)Нет.\n");
         System.out.print("Выберите действие или нажмите 3 для выхода: ");

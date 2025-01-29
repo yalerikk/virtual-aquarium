@@ -16,10 +16,11 @@ public class Goldfish extends Fish{
 
     @Override
     public String  toString() {
-        return "\n   Имя: " + getName() + "\n" +
+        return "\n   Имя: " + CheckValue.capitalizeFirstLetter(getName()) + "\n" +
+                "   Вид: Золотая рыбка\n" +
                 "   Продолжительность жизни: " + CheckValue.getAge(getLengthOfLife()) + "\n" +
                 "   Размер: " + getSize() + " (см)\n" +
-                "   Цвет: " + getColor() + "\n" +
+                "   Цвет: " + CheckValue.capitalizeFirstLetter(getColor()) + "\n" +
                 "   Цена: " + getCost() + " р.\n";
     }
 }

@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class CheckValue {
@@ -87,5 +89,54 @@ public class CheckValue {
         } else {
             return age + " лет";
         }
+    }
+
+    public static String normalizeString(String input) {
+        if (input == null) {
+            return null;
+        }
+        // Заменяем все "е" на "ё" и приводим результат к строчным буквам
+        return input.replaceAll("е", "ё").toLowerCase();
+    }
+
+    public static String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) {
+            return input; // Возврат входных данных без изменений, если они пустые
+        }
+        return Character.toUpperCase(input.charAt(0)) + input.substring(1).toLowerCase();
+    }
+
+    protected static String readVariety(String message, List<String> validVarieties) {
+        String variety;
+        while (true) {
+            System.out.println(message + " " + String.join(", ", validVarieties) + ".");
+            variety = sca.nextLine().trim().toLowerCase();
+            variety = normalizeString(variety);
+            if (validVarieties.contains(variety)) {
+                return variety;
+            } else {
+                System.out.println("Недопустимый ввод. Пожалуйста, выберите из предложенных значений\n");
+            }
+        }
+    }
+
+    public static List<String> getGuppyColors() {
+        return Arrays.asList("оранжевый", "синий", "зелёный", "жёлтый", "красный", "пурпурный", "чёрный", "голубой");
+    }
+
+    public static List<String> getGoldfishColors() {
+        return Arrays.asList("золотой", "белый", "чёрный", "оранжевый", "красный", "калико");
+    }
+
+    public static List<String> getGouramiTypes() {
+        return Arrays.asList("карликовый", "трёхпятнистый", "целующий", "гнездующий", "мраморный");
+    }
+
+    public static List<String> getSwordtailTailShapes() {
+        return Arrays.asList("заострённый", "округлый", "лирикальный", "раздвоенный", "мечевидный");
+    }
+
+    public static List<String> getNeonBrightnessLevels() {
+        return Arrays.asList("высокий", "средний", "низкий");
     }
 }

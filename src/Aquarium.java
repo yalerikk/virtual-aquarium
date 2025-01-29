@@ -7,6 +7,7 @@ import java.util.List;
 public class Aquarium {
     static String emptyAquariumMessage = "\nВ аквариуме нет рыбок..";
     static private boolean isAquariumCreated = false;
+    protected static boolean isErrorDisplayed = false; // Флаг для отслеживания ошибки
 
     public static void createAquarium(ArrayList<Fish> fishList){
         try {
@@ -19,10 +20,10 @@ public class Aquarium {
                 Guppy guppy2 = new Guppy("Гуппи 2", 3, 6, "Голубой");
                 fishList.add(guppy2);
 
-                Neon neon1 = new Neon("Неон 1", 1, 2, "Умеренно яркая");
+                Neon neon1 = new Neon("Неон 1", 1, 2, "Средний");
                 fishList.add(neon1);
 
-                Neon neon2 = new Neon("Неон 2", 5, 4, "Яркая");
+                Neon neon2 = new Neon("Неон 2", 5, 4, "Высокий");
                 fishList.add(neon2);
 
                 Swordtail swordtail1 = new Swordtail("Меченосец 1", 4, 10, "Мечевидный");
@@ -34,10 +35,10 @@ public class Aquarium {
                 Goldfish goldfish1 = new Goldfish("Золотая рыбка 1", 10, 15, "Оранжевый");
                 fishList.add(goldfish1);
 
-                Goldfish goldfish2 = new Goldfish("Золотая рыбка 2", 30, 30, "Оранжевый");
+                Goldfish goldfish2 = new Goldfish("Золотая рыбка 2", 30, 30, "Золотой");
                 fishList.add(goldfish2);
 
-                Gourami gourami1 = new Gourami("Гурами 1", 4, 10, "Обычный");
+                Gourami gourami1 = new Gourami("Гурами 1", 4, 10, "Округлый");
                 fishList.add(gourami1);
 
                 Gourami gourami2 = new Gourami("Гурами 2", 5, 8, "Мраморный");
@@ -51,7 +52,7 @@ public class Aquarium {
         }
     }
 
-    public static void showAquarium(ArrayList<Fish> fishList){
+    public static void showAquarium(ArrayList<Fish> fishList) {
         if (!fishList.isEmpty()) {
             System.out.println("\nСписок рыбок в аквариуме: \n");
             System.out.println("-----------------------");
@@ -59,11 +60,16 @@ public class Aquarium {
                 System.out.println(fish.toString());
                 System.out.println("-----------------------");
             }
+            isErrorDisplayed = false; // Успешный вывод, сброс флага
         } else {
-            try {
-                throw new EmptyAquariumException(emptyAquariumMessage);
-            } catch (EmptyAquariumException e) {
-                System.out.println(e.getMessage());
+            // Пытаемся вызвать исключение, если аквариум пуст
+            if (!isErrorDisplayed) { // Проверяем, было ли сообщение об ошибке выведено
+                try {
+                    throw new EmptyAquariumException(emptyAquariumMessage);
+                } catch (EmptyAquariumException e) {
+                    System.out.println(e.getMessage());
+                    isErrorDisplayed = true; // Устанавливаем флаг
+                }
             }
         }
     }
@@ -122,11 +128,16 @@ public class Aquarium {
                 for (Fish fish : fishList) {
                     totalCost += fish.getCost();
                 }
+                isErrorDisplayed = false; // Успешно выполнено, сбрасываем флаг
                 return totalCost;
             }
         } catch (EmptyAquariumException e) {
-            System.out.println(e.getMessage());
-            return totalCost;
+            // Обработка исключения
+            if (!isErrorDisplayed) { // Проверяем флаг
+                System.out.println(e.getMessage());
+                isErrorDisplayed = true; // Устанавливаем флаг, что сообщение об ошибке выведено
+            }
+            return totalCost; // Возврат 0 для пустого аквариума
         }
     }
 
@@ -158,6 +169,7 @@ public class Aquarium {
                 }
 
                 if (fishInRange.isEmpty()) {
+                    emptyAquariumMessage.substring(0, 20);
                     throw new EmptyAquariumException(emptyAquariumMessage + " с заданным диапазоном размеров");
                 } else {
                     System.out.println("\nРыбки в заданном диапазоне размеров (" + minSize + " - " + maxSize + "):\n");
@@ -229,8 +241,7 @@ public class Aquarium {
                 int size = CheckValue.readIntegerInRange(1, 6);
                 guppy.setSize(size);
 
-                System.out.println("Введите цвет гуппи: ");
-                String color = CheckValue.readNonEmptyString();
+                String color = CheckValue.readVariety("Введите цвет гуппи:", CheckValue.getGuppyColors());
                 guppy.setColor(color);
 
                 return guppy;
@@ -260,8 +271,7 @@ public class Aquarium {
                 int size = CheckValue.readIntegerInRange(1, 4);
                 neon.setSize(size);
 
-                System.out.println("Введите яркость неона: ");
-                String brightness = CheckValue.readNonEmptyString();
+                String brightness = CheckValue.readVariety("Введите уровень яркости неона:", CheckValue.getNeonBrightnessLevels());
                 neon.setBrightness(brightness);
 
                 return neon;
@@ -291,8 +301,7 @@ public class Aquarium {
                 int size = CheckValue.readIntegerInRange(1, 15);
                 swordtail.setSize(size);
 
-                System.out.println("Введите форму хвоста меченосца: ");
-                String tailShape = CheckValue.readNonEmptyString();
+                String tailShape = CheckValue.readVariety("Введите форму хвоста меченосца:", CheckValue.getSwordtailTailShapes());
                 swordtail.setTailShape(tailShape);
 
                 return swordtail;
@@ -322,8 +331,7 @@ public class Aquarium {
                 int size = CheckValue.readIntegerInRange(1, 30);
                 goldfish.setSize(size);
 
-                System.out.println("Введите цвет золотой рыбки: ");
-                String color = CheckValue.readNonEmptyString();
+                String color = CheckValue.readVariety("Выберите цвет золотой рыбки:", CheckValue.getGoldfishColors());
                 goldfish.setColor(color);
 
                 return goldfish;
@@ -353,8 +361,7 @@ public class Aquarium {
                 int size = CheckValue.readIntegerInRange(1, 12);
                 gourami.setSize(size);
 
-                System.out.println("Введите вид гурами: ");
-                String species = CheckValue.readNonEmptyString();
+                String species = CheckValue.readVariety("Введите вид гурами:", CheckValue.getGouramiTypes());
                 gourami.setSpecies(species);
 
                 return gourami;

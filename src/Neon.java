@@ -16,10 +16,11 @@ public class Neon extends Fish {
 
     @Override
     public String  toString() {
-        return "\n   Имя: " + getName() + "\n" +
+        return "\n   Имя: " + CheckValue.capitalizeFirstLetter(getName()) + "\n" +
+                "   Вид: Неон\n" +
                 "   Продолжительность жизни: " + CheckValue.getAge(getLengthOfLife()) + "\n" +
                 "   Размер: " + getSize() + " (см)\n" +
-                "   Яркость: " + getBrightness() + "\n" +
+                "   Уровень яркости: " + CheckValue.capitalizeFirstLetter(getBrightness()) + "\n" +
                 "   Цена: " + getCost() + " р.\n";
     }
 }

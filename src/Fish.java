@@ -42,7 +42,6 @@ public abstract class Fish implements Comparable<Fish>, Serializable {
     public double getCost() {
         return cost;
     }
-
     @Override
     public int compareTo(Fish o) {
         return this.getLengthOfLife() - o.getLengthOfLife();

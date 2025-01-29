@@ -16,10 +16,11 @@ public class Swordtail extends Fish{
 
     @Override
     public String  toString() {
-        return "\n   Имя: " + getName() + "\n" +
+        return "\n   Имя: " + CheckValue.capitalizeFirstLetter(getName()) + "\n" +
+                "   Вид: Меченосец\n" +
                 "   Продолжительность жизни: " + CheckValue.getAge(getLengthOfLife()) + "\n" +
                 "   Размер: " + getSize() + " (см)\n" +
-                "   Форма хвоста: " + getTailShape() + "\n" +
+                "   Форма хвоста: " + CheckValue.capitalizeFirstLetter(getTailShape()) + "\n" +
                 "   Цена: " + getCost() + " р.\n";
     }
 }
